@@ -9,6 +9,9 @@ public class Player : MonoBehaviour
 
     public PlayerIdleState IdleState { get; private set; }
     public PlayerMoveState MoveState { get; private set; }
+    public PlayerJumpState JumpState { get; private set; }
+    public PlayerInAirState InAirState { get; private set; }
+    public PlayerLandState LandState { get; private set; }
 
     [SerializeField]
     private PlayerData playerData;
@@ -18,6 +21,13 @@ public class Player : MonoBehaviour
     public Animator Anim { get; private set; }
     public PlayerInputHandler InputHandler { get; private set; }
     public Rigidbody2D rigidBody { get; private set; }
+    #endregion
+
+    #region Check Transforms
+
+    [SerializeField]
+    private Transform groundCheck;
+
     #endregion
 
     #region Other Variables
@@ -34,6 +44,9 @@ public class Player : MonoBehaviour
 
         IdleState = new PlayerIdleState(this, StateMachine, playerData, "player_idle");
         MoveState = new PlayerMoveState(this, StateMachine, playerData, "player_move");
+        JumpState = new PlayerJumpState(this, StateMachine, playerData, "player_jump");
+        InAirState = new PlayerInAirState(this, StateMachine, playerData, "player_inAir");
+        LandState = new PlayerLandState(this, StateMachine, playerData, "player_land");
     }
 
     private void Start()
@@ -66,6 +79,13 @@ public class Player : MonoBehaviour
         rigidBody.velocity = workspace;
         CurrentVelocity = workspace;
     }
+
+    public void SetVelocityY(float velocity)
+    {
+        workspace.Set(CurrentVelocity.x, velocity);
+        rigidBody.velocity = workspace;
+        CurrentVelocity = workspace;
+    }
     #endregion
 
     #region Check Functions
@@ -75,6 +95,11 @@ public class Player : MonoBehaviour
         {
             Flip();
         }
+    }
+
+    public bool CheckIfGrounded()
+    {
+        return Physics2D.OverlapCircle(groundCheck.position, playerData.groundCheckRadius, playerData.whatIsGround);
     }
     #endregion
 

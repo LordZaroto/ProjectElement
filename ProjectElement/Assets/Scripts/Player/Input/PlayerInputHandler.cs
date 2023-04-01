@@ -8,6 +8,7 @@ public class PlayerInputHandler : MonoBehaviour
     public Vector2 RawMovementInput { get; private set; }
     public int NormInputX { get; private set; }
     public int NormInputY { get; private set; }
+    public bool JumpInput { get; private set; }
 
     public void OnMoveInput(InputAction.CallbackContext context)
     {
@@ -21,12 +22,12 @@ public class PlayerInputHandler : MonoBehaviour
     {
         
         
-        /*if(context.started)
+        if(context.started)
         {
-            //button was pushed
+            JumpInput = true;
         }
 
-        if(context.performed)
+        /*if(context.performed)
         {
             //button is being held
         }
@@ -36,4 +37,6 @@ public class PlayerInputHandler : MonoBehaviour
             //button has been released
         }*/
     }
+
+    public void UseJumpInput() => JumpInput = false;
 }
