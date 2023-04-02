@@ -12,6 +12,6 @@ public class PlayerData : ScriptableObject
     public float jumpVelocity = 15f;
 
     [Header("Check Variables")]
-    public float groundCheckRadius;
+    public float groundCheckRadius = 0.3f;
     public LayerMask whatIsGround;
 }

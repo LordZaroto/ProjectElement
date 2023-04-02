@@ -99,6 +99,10 @@ public class Player : MonoBehaviour
 
     public bool CheckIfGrounded()
     {
+        if(Physics2D.OverlapCircle(groundCheck.position, playerData.groundCheckRadius, playerData.whatIsGround) == true)
+        {
+            Debug.Log("true");
+        }
         return Physics2D.OverlapCircle(groundCheck.position, playerData.groundCheckRadius, playerData.whatIsGround);
     }
     #endregion
@@ -109,5 +113,9 @@ public class Player : MonoBehaviour
         FacingDirection *= -1;
         transform.Rotate(0.0f, 180.0f, 0.0f);
     }
+
+    private void AnimationTrigger() => StateMachine.CurrentState.AnimationTrigger();
+
+    private void AnimationFinishTrigger() => StateMachine.CurrentState.AnimationFinishTrigger();
     #endregion
 }
