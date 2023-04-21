@@ -2,14 +2,24 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PlayerGroundedState : PlayerState
+public class PlayerTouchingWallState : PlayerState
 {
+    protected bool isGrounded;
+    protected bool isTouchingWall;
     protected int xInput;
-    private bool jumpInput;
-    private bool isGrounded;
-    
-    public PlayerGroundedState(Player player, PlayerStateMachine stateMachine, PlayerData playerData, string animBoolName) : base(player, stateMachine, playerData, animBoolName)
+
+    public PlayerTouchingWallState(Player player, PlayerStateMachine stateMachine, PlayerData playerData, string animName) : base(player, stateMachine, playerData, animName)
     {
+    }
+
+    public override void AnimationFinishTrigger()
+    {
+        base.AnimationFinishTrigger();
+    }
+
+    public override void AnimationTrigger()
+    {
+        base.AnimationTrigger();
     }
 
     public override void DoChecks()
@@ -17,13 +27,12 @@ public class PlayerGroundedState : PlayerState
         base.DoChecks();
 
         isGrounded = player.CheckIfGrounded();
+        isTouchingWall = player.CheckIfGrounded();
     }
 
     public override void Enter()
     {
         base.Enter();
-
-        player.JumpState.ResetJumps();
     }
 
     public override void Exit()
@@ -36,16 +45,13 @@ public class PlayerGroundedState : PlayerState
         base.LogicUpdate();
 
         xInput = player.InputHandler.NormInputX;
-        jumpInput = player.InputHandler.JumpInput;
 
-        if (jumpInput && player.JumpState.CanJump())
+        if (isGrounded)
         {
-            player.InputHandler.UseJumpInput();
-            stateMachine.ChangeState(player.JumpState);
+            stateMachine.ChangeState(player.IdleState);
         }
-        else if (!isGrounded)
+        else if(!isTouchingWall || xInput != player.FacingDirection)
         {
-            player.InAirState.StartCoyoteTime();
             stateMachine.ChangeState(player.InAirState);
         }
     }

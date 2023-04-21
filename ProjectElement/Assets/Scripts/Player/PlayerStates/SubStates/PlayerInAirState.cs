@@ -6,6 +6,11 @@ public class PlayerInAirState : PlayerState
 {
     protected bool isGrounded;
     private int xInput;
+    private bool jumpInput;
+    private bool coyoteTime;
+    private bool isJumping;
+    private bool jumpInputStop;
+    private bool isTouchingWall;
     
     public PlayerInAirState(Player player, PlayerStateMachine stateMachine, PlayerData playerData, string animName) : base(player, stateMachine, playerData, animName)
     {
@@ -16,6 +21,7 @@ public class PlayerInAirState : PlayerState
         base.DoChecks();
 
         isGrounded = player.CheckIfGrounded();
+        isTouchingWall = player.CheckIfTouchingWall();
     }
 
     public override void Enter()
@@ -32,11 +38,26 @@ public class PlayerInAirState : PlayerState
     {
         base.LogicUpdate();
 
-        xInput = player.InputHandler.NormInputX;
+        CheckCoyoteTime();
 
-        if(isGrounded && player.CurrentVelocity.y < 0.01f)
+        xInput = player.InputHandler.NormInputX;
+        jumpInput = player.InputHandler.JumpInput;
+        jumpInputStop = player.InputHandler.JumpInputStop;
+
+        CheckJumpMultiplyer();
+
+        if (isGrounded && player.CurrentVelocity.y < 0.01f)
         {
             stateMachine.ChangeState(player.LandState);
+        }
+        else if(jumpInput && player.JumpState.CanJump())
+        {
+            player.InputHandler.UseJumpInput();
+            stateMachine.ChangeState(player.JumpState);
+        }
+        else if(isTouchingWall && xInput == player.FacingDirection && player.CurrentVelocity.y <= 0)
+        {
+            stateMachine.ChangeState(player.WallSlideState);
         }
         else
         {
@@ -48,5 +69,37 @@ public class PlayerInAirState : PlayerState
     public override void PhysicsUpdate()
     {
         base.PhysicsUpdate();
+    }
+
+    private void CheckJumpMultiplyer()
+    {
+        if (isJumping)
+        {
+            if (jumpInputStop)
+            {
+                player.SetVelocityY(player.CurrentVelocity.y * playerData.variableJumpHeightMultiplier);
+                isJumping = false;
+            }
+            else if (player.CurrentVelocity.y <= 0f)
+            {
+                isJumping = false;
+            }
+        }
+    }
+
+    public void SetIsJumping() => isJumping = true;
+
+    private void CheckCoyoteTime()
+    {
+        if(coyoteTime && Time.time > startTime + playerData.coyoteTime)
+        {
+            coyoteTime = false;
+            player.JumpState.DecreaseAmountOfJumpsLeft();
+        }
+    }
+
+    public void StartCoyoteTime()
+    {
+        coyoteTime = true;
     }
 }
