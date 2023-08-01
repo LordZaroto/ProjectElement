@@ -20,7 +20,7 @@ public class PlayerData : ScriptableObject
     public float wallSlideVelocity = 3f;
 
     [Header("Check Variables")]
-    public float groundCheckRadius = 0.3f;
+    public float groundCheckRadius = 0.2f;
     public float wallCheckRadius = 0.5f;
     public LayerMask whatIsGround;
 }
