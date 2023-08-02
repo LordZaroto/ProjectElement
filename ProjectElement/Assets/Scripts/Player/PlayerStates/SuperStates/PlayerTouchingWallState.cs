@@ -7,6 +7,7 @@ public class PlayerTouchingWallState : PlayerState
     protected bool isGrounded;
     protected bool isTouchingWall;
     protected int xInput;
+    protected int yInput;
 
     public PlayerTouchingWallState(Player player, PlayerStateMachine stateMachine, PlayerData playerData, string animName) : base(player, stateMachine, playerData, animName)
     {
@@ -45,6 +46,7 @@ public class PlayerTouchingWallState : PlayerState
         base.LogicUpdate();
 
         xInput = player.InputHandler.NormInputX;
+        yInput = player.InputHandler.NormInputY;
 
         if (isGrounded)
         {

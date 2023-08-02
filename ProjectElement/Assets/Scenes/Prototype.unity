@@ -432,6 +432,10 @@ MonoBehaviour:
         m_CallState: 2
     m_ActionId: d31cc25b-469f-465a-97a2-184ded980b02
     m_ActionName: Gameplay/Jump[/Keyboard/space]
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: 0600d9cc-f9d7-43bf-8b84-3fdec4ba2b3c
+    m_ActionName: Gameplay/Grab[/Keyboard/ctrl]
   m_NeverAutoSwitchControlSchemes: 0
   m_DefaultControlScheme: 
   m_DefaultActionMap: Gameplay
