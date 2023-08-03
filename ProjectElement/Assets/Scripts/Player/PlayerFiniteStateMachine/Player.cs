@@ -13,6 +13,7 @@ public class Player : MonoBehaviour
     public PlayerInAirState InAirState { get; private set; }
     public PlayerLandState LandState { get; private set; }
     public PlayerWallSlideState WallSlideState { get; private set; }
+    public PlayerWallJumpState WallJumpState { get; private set; }
 
     [SerializeField]
     private PlayerData playerData;
@@ -51,6 +52,7 @@ public class Player : MonoBehaviour
         InAirState = new PlayerInAirState(this, StateMachine, playerData, "player_inAir");
         LandState = new PlayerLandState(this, StateMachine, playerData, "player_land");
         WallSlideState = new PlayerWallSlideState(this, StateMachine, playerData, "player_wallSlide");
+        WallJumpState = new PlayerWallJumpState(this, StateMachine, playerData, "player_wallJump");
     }
 
     private void Start()
@@ -113,7 +115,7 @@ public class Player : MonoBehaviour
     #endregion
 
     #region Helper Functions
-    private void Flip()
+    public void Flip()
     {
         FacingDirection *= -1;
         transform.Rotate(0.0f, 180.0f, 0.0f);
