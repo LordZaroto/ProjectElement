@@ -39,6 +39,7 @@ public class Player : MonoBehaviour
     public int FacingDirection { get; private set; }
 
     private Vector2 workspace;
+    public Vector2 VelocityWorkspace { get; private set; }
     #endregion
 
     #region Unity Callback Functions
