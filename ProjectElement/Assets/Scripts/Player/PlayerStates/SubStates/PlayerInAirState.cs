@@ -66,15 +66,7 @@ public class PlayerInAirState : PlayerState
         else
         {
             player.CheckIfShouldFlip(xInput);
-
-            float velocityWorkspaceX = playerData.inAirMaxVelocity * xInput;
-            Debug.Log(velocityWorkspaceX);
-            if(velocityWorkspaceX != player.CurrentVelocity.x)
-            {
-                
-                
-                player.SetVelocityX(velocityWorkspaceX);
-            }
+            player.AddVelocityX(playerData.inAirAcceleration * xInput, playerData.inAirMaxVelocity);
         }
     }
 

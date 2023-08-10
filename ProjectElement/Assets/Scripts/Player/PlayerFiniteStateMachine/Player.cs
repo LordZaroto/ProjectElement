@@ -86,6 +86,19 @@ public class Player : MonoBehaviour
         CurrentVelocity = workspace;
     }
 
+    public void AddVelocityX(float velocity, float maxVelocity)
+    {
+        float newVelocity = velocity + CurrentVelocity.x;
+        if (Mathf.Abs(newVelocity) < maxVelocity || 
+            (CurrentVelocity.x > 0 && velocity < 0) || 
+            (CurrentVelocity.x < 0 && velocity > 0))
+        {
+            workspace.Set(newVelocity, CurrentVelocity.y);
+            rigidBody.velocity = workspace;
+            CurrentVelocity = workspace;
+        }
+    }
+
     public void SetVelocityY(float velocity)
     {
         workspace.Set(CurrentVelocity.x, velocity);

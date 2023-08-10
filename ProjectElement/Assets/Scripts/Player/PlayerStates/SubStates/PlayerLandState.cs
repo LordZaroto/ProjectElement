@@ -20,5 +20,7 @@ public class PlayerLandState : PlayerGroundedState
         {
             stateMachine.ChangeState(player.IdleState);
         }
+
+        player.SetVelocityX(0);
     }
 }
